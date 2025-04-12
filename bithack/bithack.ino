@@ -134,9 +134,15 @@ void morseCheck() {
   bool found = false;
     if (buttonLog == alphaProp[randomIndex].morseCode) {
       Serial.println(alphaProp[randomIndex].letter);
+      Serial.println("Correct!");
       found = true;
-      player.play(1); //use diff value for diff track number
-      //delay(?);
+      player.play(1);
+      delay(10000);
+      player.stop();
+      Serial.println("Play again?");
+        if(stop_pressed); {
+          pickRandomLetter();
+        }
       break;
     }
   while (!found) {
