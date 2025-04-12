@@ -9,14 +9,30 @@ int count = 0;
 
 //turns on the green led for 1s when the short Button is pressed
 void short_light() {
-  count++;
+  /*count++;
   Serial.write("activated\n");
 
   if (count%2 == 0) {
     digitalWrite(LEDSB, LOW);
   } else {
     digitalWrite(LEDSB, HIGH);
+  }*/
+
+  int shortLightCountDown = 1000;
+  while(shortLightCountDown > 0){
+    shortLightCountDown--;
+    digitalWrite(LEDSB, HIGH);
   }
+  digitalWrite(LEDSB, LOW);
+}
+
+void long_light(){
+  int longLightCountDown = 1000;
+  while(longLightCountDown > 0){
+    longLightCountDown--;
+    digitalWrite(LEDLB, HIGH);
+  }
+  digitalWrite(LEDLB, LOW);
 }
 
 void setup() {
@@ -29,19 +45,14 @@ void setup() {
 
 }
 
-void long_light(){
-  startCountDown = 1;
-}
-
-int longLightCount = 3000;
 
 void loop() {
 
-  if(startCountDown && longLightCount > 0){
+  /*if(startCountDown && longLightCount > 0){
     longLightCount--;
     digitalWrite(LEDLB, HIGH);
   }else{
     digitalWrite(LEDLB, LOW);
     startCountDown = 0;
-  }
+  }*/
 }
