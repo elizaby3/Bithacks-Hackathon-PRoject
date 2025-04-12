@@ -1,9 +1,7 @@
-
 #include <Timer.h>
 #include <HardwareSerial.h>
 #include <DFRobotDFPlayerMini.h>
-#include <Timer.h>
-Timer timer;
+#include <LiquidCrystal_I2C.h>
 
 const int alphaSize = 26;
 
@@ -22,6 +20,8 @@ int randomIndex;
 volatile bool lb_pressed = false;
 volatile bool sb_pressed = false;
 volatile bool stop_pressed = false;
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 struct Alphabet{
   String letter;  
@@ -86,6 +86,11 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(shortButton), short_light, FALLING);
   attachInterrupt(digitalPinToInterrupt(longButton), long_light, FALLING);      //setup for pinmods and interrupts
   attachInterrupt(digitalPinToInterrupt(stopButton), stop, FALLING);
+
+  lcd.init();
+  lcd.backlight();
+
+  pickRandomLetter();
 }
 
 
@@ -95,10 +100,12 @@ void pickRandomLetter() {
 
   Alphabet currentLetter = alphaProp[randomIndex];
 
-  Serial.print("New round! Morse for letter: ");
-  Serial.println(currentLetter.letter);
-  Serial.print("Expected Morse code: ");
-  Serial.println(currentLetter.morseCode);
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Morse for letter: ");
+  lcd.setCursor(1,0);
+  lcd.print(currentLetter.letter);
+  delay(10000);
 }
 
 
@@ -111,6 +118,9 @@ void morseCheck() {
   if (!found) {
     Serial.println("No match found.");
   }
+
+  pickRandomLetter();
+
 }
 
 void loop() {
