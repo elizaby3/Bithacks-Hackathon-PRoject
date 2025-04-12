@@ -40,6 +40,21 @@ struct Alphabet{ //creates the "dictionary" that allows to access the features o
 
 Alphabet alphaProp[] = { //creates an array that includes all letters of the alphabet and its properties as properties 
   {"A", "01"},
+  {"B", "1000"},
+  {"C", "1010"},
+  {"D", "100"},
+  {"E", "0"},
+  {"F", "0011"},
+  {"G", "110"},
+  {"H", "0000"},
+  {"I", "00"},
+  {"J", "0111"},
+  {"K", "101"},
+  {"L", "010"},
+  {"M", "11"}, 
+
+  
+
 
 }
 
