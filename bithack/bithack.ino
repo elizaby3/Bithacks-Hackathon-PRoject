@@ -18,30 +18,18 @@ void short_light() {
     digitalWrite(LEDSB, HIGH);
   }*/
 
-<<<<<<< Updated upstream
   int shortLightCountDown = 1000;
   while(shortLightCountDown > 0){
     shortLightCountDown--;
-=======
-int shortlightCountDown = 1000;
-  while(shortlightCountDown > 0){
-    shortlightCountDown--;
->>>>>>> Stashed changes
     digitalWrite(LEDSB, HIGH);
   }
   digitalWrite(LEDSB, LOW);
 }
 
 void long_light(){
-<<<<<<< Updated upstream
   int longLightCountDown = 1000;
   while(longLightCountDown > 0){
     longLightCountDown--;
-=======
-  int longlightCountDown = 3000;
-  while(longlightCountDown > 0){
-    longlightCountDown--;
->>>>>>> Stashed changes
     digitalWrite(LEDLB, HIGH);
   }
   digitalWrite(LEDLB, LOW);
@@ -50,7 +38,6 @@ void long_light(){
 void setup() {
   pinMode(shortButton, INPUT_PULLUP);
   pinMode(LEDSB, OUTPUT);
-  pinMode(LEDLB, OUTPUT);
   attachInterrupt(digitalPinToInterrupt(shortButton), short_light, FALLING);
   attachInterrupt(digitalPinToInterrupt(longButton), long_light, FALLING);
 
@@ -58,11 +45,6 @@ void setup() {
 
 }
 
-<<<<<<< Updated upstream
-=======
-
-
->>>>>>> Stashed changes
 
 void loop() {
 
