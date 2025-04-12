@@ -96,6 +96,8 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(shortButton), short_light, FALLING);
   attachInterrupt(digitalPinToInterrupt(longButton), long_light, FALLING);    
   attachInterrup(digitalPinToInterrupt(stopButton), stop, FALLING);
+
+  pickRandomLetter();
 }
 
 void playMorseForLetter(String morseCode) {
@@ -137,9 +139,9 @@ void morseCheck() {
       //delay(?);
       break;
     }
-  if (!found) {
+  while (!found) {
     player.play(1); //use diff value for diff track number, whatever track corresponds to rick roll
-    Serial.println("Incorrect input");
+    Serial.println("Incorrect input, try again");
     delay(10000);
     player.stop();
   }
