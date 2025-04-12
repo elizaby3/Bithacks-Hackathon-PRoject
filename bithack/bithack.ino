@@ -12,6 +12,12 @@ void short_light() {
   digitalWrite(LEDSB, LOW);
 }
 
+void long_light() {
+  digitalWrite(LEDLB, HIGH);
+  delay(1000);
+  digitalWrite(LEDLB, LOW);
+}
+
 void setup() {
   pinMode(shortButton, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(shortButton), short_light, FALLING);
