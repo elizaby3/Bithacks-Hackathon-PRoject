@@ -31,3 +31,15 @@ void setup() {
 void loop() {
 
 }
+
+struct Alphabet{ //creates the "dictionary" that allows to access the features of each letter in the alphabet
+  String letter;  //accesses the letter
+  String morseCode; //accesses the morse code that corresponds to each letter 
+  //the morseCode is integers as a string because we'll use the compare function
+}
+
+Alphabet alphaProp[] = { //creates an array that includes all letters of the alphabet and its properties as properties 
+  {"A", "01"},
+
+}
+
