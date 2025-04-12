@@ -1,120 +1,104 @@
-#include <HardwareSerial.h>
-#include <DFRobotDFPlayerMini.h>
-<<<<<<< HEAD
-#include <timer.h>
-
-const int shortButton = 6;
-//const int longButton;
-//const int startEnd;
-const int LEDSB = 5;
-//const int LEDLB;
-//const int LEDSE;
-
-int count = 0;
-HardwareSerial mySerial1(1);
-DFRobotDFPlayerMini player;
-
-=======
+#include <Timer.h>
+Timer timer;
 
 const int shortButton = 7;
-const int longButton;
-const int startEnd;
-const int LEDSB = 15;
-const int LEDLB;
-const int LEDSE;
-const int rxPin = ;
-const int txPin = ;
+const int longButton = 6;
+//const int startEnd;
+const int LEDSB = 5;
+const int LEDLB = 4;
+//const int LEDSE;
+int startCountDown = 0;
+int count = 0;
 
-int startCountDown;
-HardwareSerial mySerial1(1);
-DFRobotDFPlayerMini player;
->>>>>>> 3462fd8bbf78e563b352084ba248ee989133445b
+volatile bool sb_pressed = false;
+bool sb_pressed_prev = false;
+unsigned long sb_time = 0;
+unsigned long sb_time_next = 0;
 
-//turns on the green led for 1s when the short Button is pressed
+volatile bool lb_pressed = false;
+bool lb_pressed_prev = false;
+unsigned long lb_time = 0;
+unsigned long lb_time_next = 0;
+
 void short_light() {
-  digitalWrite(LEDSB, HIGH);
-  tone(3, 783, 1000);
-  startCountDown = 1;
-  digitalWrite(LEDSB, LOW);
-  
+  sb_pressed = true;
 }
 
-<<<<<<< HEAD
-  if (count%2 == 0) {
-    digitalWrite(LEDSB, LOW);
-  } else {
-    digitalWrite(LEDSB, HIGH);
-  }
-
-//turns on the green led for 1s when the short Button is pressed
-void short_light() {
-  digitalWrite(LEDSB, HIGH);
-  tone(3, 783, 1000);
-  startCountDown = 1;
-}
-
-=======
->>>>>>> 3462fd8bbf78e563b352084ba248ee989133445b
-void long_light() {
-  digitalWrite(LEDLB, HIGH);
-  tone(3, 783, 3000);
-
-  startCountDown = 1;
-<<<<<<< HEAD
-  longLightCount = 1;
-=======
-  digitalWrite(LEDLB, LOW);
->>>>>>> 3462fd8bbf78e563b352084ba248ee989133445b
+void long_light(){
+  lb_pressed = true;
 }
 
 void setup() {
+  Serial.begin(115200);
+  while (!Serial) {
+    delay(10);
+  }
   pinMode(shortButton, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(shortButton), short_light, FALLING);
+  pinMode(LEDSB, OUTPUT);
   pinMode(longButton, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(longButton), long_light, FALLING);
-
-  player.volume(20);
-  player.play(1);
-  mySerial1.begin(9600, SERIAL_8N1, rxPin, txPin);
-
-  randomSeed(analogRead(0));  //randomizer
-
-  for (int i = n - 1; i > 0; i--) {
-    int j = random(0, i + 1);
-    int temp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = temp;
-  }
-
-  // Print shuffled array
-  for (int i = 0; i < n; i++) {
-    Serial.println(arr[i]);
-  }
+  pinMode(LEDLB, OUTPUT);
+  attachInterrupt(digitalPinToInterrupt(shortButton), short_light, FALLING);
+  attachInterrupt(digitalPinToInterrupt(longButton), long_light, FALLING);      //setup for pinmods and interrupts
 
 }
 
-int longLightCount = 3000;
+
+String buttonLog = "";
 
 void loop() {
 
-  if(startCountDown && longLightCount > 0) {
-    longLightCount--;
-    digitalWrite(LEDLB, HIGH);
-<<<<<<< HEAD
+  if (sb_pressed) {
+    digitalWrite(LEDSB, HIGH);
+    buttonLog += "0"; 
+    Serial.println("Short button pressed. Log: " + buttonLog);
+    delay(1000);
+    digitalWrite(LEDSB, LOW);
+    sb_pressed = false;
+  }
 
-=======
->>>>>>> 3462fd8bbf78e563b352084ba248ee989133445b
-  }else{
+  if (lb_pressed) {
+    digitalWrite(LEDLB, HIGH);
+    buttonLog += "1";
+    Serial.println("Long button pressed. Log: " + buttonLog);
+    delay(2000);
     digitalWrite(LEDLB, LOW);
-    startCountDown = 0;
+    lb_pressed = false;
+  }
+
+  if (stop_pressed) {
+    morseCheck();
   }
 }
 
+struct Alphabet{
+  String letter;  
+  String morseCode; 
+};
 
-struct Alphabet{ //creates the "dictionary" that allows to access the features of each letter in the alphabet
-  String letter;  //accesses the letter
-  String morseCode; //accesses the morse code that corresponds to each letter 
-  //the morseCode is integers as a string because we'll use the compare function
+void pickRandomLetter() {
+  int randomIndex = random(0, alphaSize); // Get random index from 0 to alphaSize - 1
+  currentLetter = alphaProp[randomIndex];
+
+  Serial.print("New round! Morse for letter: ");
+  Serial.println(currentLetter.letter);
+  Serial.print("Expected Morse code: ");
+  Serial.println(currentLetter.morseCode);
+}
+
+
+void morseCheck() {
+  bool found = false;
+  for (int i = 0; i < alphaSize; i++) {
+    if (buttonLog == alphaProp[i].morseCode) {
+      Serial.print("Matched letter: ");
+      Serial.println(alphaProp[i].letter);
+      found = true;
+      break;
+    }
+  }
+  if (!found) {
+    Serial.println("No match found.");
+  }
 }
 
 Alphabet alphaProp[] = { //creates an array that includes all letters of the alphabet and its properties as properties 
