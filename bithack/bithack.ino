@@ -49,10 +49,14 @@ void setup() {
   Serial.println("Ready");
 }
 
+String buttonLog = "";
+
 void loop() {
 
   if (sb_pressed) {
     digitalWrite(LEDSB, HIGH);
+    buttonLog += "0"; 
+    Serial.println("Short button pressed. Log: " + buttonLog);
     delay(1000);
     digitalWrite(LEDSB, LOW);
     sb_pressed = false;
@@ -60,10 +64,13 @@ void loop() {
 
   if (lb_pressed) {
     digitalWrite(LEDLB, HIGH);
+    buttonLog += "1";
+    Serial.println("Long button pressed. Log: " + buttonLog);
     delay(2000);
     digitalWrite(LEDLB, LOW);
     lb_pressed = false;
   }
+
 }
 
 
