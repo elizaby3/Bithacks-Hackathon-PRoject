@@ -1,5 +1,6 @@
 #include <HardwareSerial.h>
 #include <DFRobotDFPlayerMini.h>
+<<<<<<< HEAD
 #include <timer.h>
 
 const int shortButton = 6;
@@ -13,12 +14,32 @@ int count = 0;
 HardwareSerial mySerial1(1);
 DFRobotDFPlayerMini player;
 
+=======
+
+const int shortButton = 7;
+const int longButton;
+const int startEnd;
+const int LEDSB = 15;
+const int LEDLB;
+const int LEDSE;
+const int rxPin = ;
+const int txPin = ;
+
+int startCountDown;
+HardwareSerial mySerial1(1);
+DFRobotDFPlayerMini player;
+>>>>>>> 3462fd8bbf78e563b352084ba248ee989133445b
 
 //turns on the green led for 1s when the short Button is pressed
 void short_light() {
-  count++;
-  Serial.write("activated\n");
+  digitalWrite(LEDSB, HIGH);
+  tone(3, 783, 1000);
+  startCountDown = 1;
+  digitalWrite(LEDSB, LOW);
+  
+}
 
+<<<<<<< HEAD
   if (count%2 == 0) {
     digitalWrite(LEDSB, LOW);
   } else {
@@ -32,29 +53,57 @@ void short_light() {
   startCountDown = 1;
 }
 
+=======
+>>>>>>> 3462fd8bbf78e563b352084ba248ee989133445b
 void long_light() {
   digitalWrite(LEDLB, HIGH);
   tone(3, 783, 3000);
 
   startCountDown = 1;
+<<<<<<< HEAD
   longLightCount = 1;
+=======
+  digitalWrite(LEDLB, LOW);
+>>>>>>> 3462fd8bbf78e563b352084ba248ee989133445b
 }
 
 void setup() {
   pinMode(shortButton, INPUT_PULLUP);
-  pinMode(LEDSB, OUTPUT);
   attachInterrupt(digitalPinToInterrupt(shortButton), short_light, FALLING);
+  pinMode(longButton, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(longButton), long_light, FALLING);
 
-  Serial.begin(115200);
+  player.volume(20);
+  player.play(1);
+  mySerial1.begin(9600, SERIAL_8N1, rxPin, txPin);
+
+  randomSeed(analogRead(0));  //randomizer
+
+  for (int i = n - 1; i > 0; i--) {
+    int j = random(0, i + 1);
+    int temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+  }
+
+  // Print shuffled array
+  for (int i = 0; i < n; i++) {
+    Serial.println(arr[i]);
+  }
 
 }
+
+int longLightCount = 3000;
 
 void loop() {
 
   if(startCountDown && longLightCount > 0) {
     longLightCount--;
     digitalWrite(LEDLB, HIGH);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3462fd8bbf78e563b352084ba248ee989133445b
   }else{
     digitalWrite(LEDLB, LOW);
     startCountDown = 0;
@@ -95,9 +144,6 @@ Alphabet alphaProp[] = { //creates an array that includes all letters of the alp
   {"X", "1001"},
   {"Y", "1011"},
   {"Z", "1100"},
-
-  
-
 
 }
 
