@@ -12,14 +12,14 @@ const int stopButton = 15;
 const int LEDSB = 5;
 const int LEDLB = 4;
 const int LEDSE = 16;
-const int buzzer = 17; //
+const int buzzer = 17;
 
 int startCountDown = 0;
 int count = 0;
 int randomIndex;
 
-const int txPin = 43; //
-const int rxPin = 44; //
+const int txPin = 43;
+const int rxPin = 44;
 
 volatile bool lb_pressed = false;
 volatile bool sb_pressed = false;
@@ -61,12 +61,12 @@ String buttonLog = "";
 
 void short_light() {
   sb_pressed = true;
-  tone(16, 783, 1000); //
+  tone(16, 783, 1000);
 }
 
 void long_light(){
   lb_pressed = true;
-  tone(16, 783, 3000); //
+  tone(16, 783, 3000);
 }
 
 void stop() {
@@ -140,9 +140,8 @@ void morseCheck() {
       delay(10000);
       player.stop();
       Serial.println("Play again?");
-        if(stop_pressed); {
-          pickRandomLetter();
-        }
+      //need a function to allow player to play again?
+      //if yes then call pickRandomLetter();
       break;
     }
   while (!found) {
