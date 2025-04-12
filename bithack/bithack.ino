@@ -16,14 +16,15 @@ DFRobotDFPlayerMini player;
 //turns on the green led for 1s when the short Button is pressed
 void short_light() {
   digitalWrite(LEDSB, HIGH);
-  tone(3, 783, 500);
-  delay(1000);
+  tone(3, 783, 1000);
+  //delay(1000);
   digitalWrite(LEDSB, LOW);
   
 }
 
 void long_light() {
   digitalWrite(LEDLB, HIGH);
+  startCountDown = 1;
   delay(1000);
   digitalWrite(LEDLB, LOW);
 }
@@ -40,7 +41,15 @@ void setup() {
 
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
+int longLightCount = 3000;
 
+void loop() {
+
+  if(startCountDown && longLightCount > 0){
+    longLightCount--;
+    digitalWrite(LEDLB, HIGH);
+  }else{
+    digitalWrite(LEDLB, LOW);
+    startCountDown = 0;
+  }
 }
