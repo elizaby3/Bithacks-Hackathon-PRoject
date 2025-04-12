@@ -1,10 +1,10 @@
 const int shortButton = 6;
-//const int longButton;
+const int longButton = 7;
 //const int startEnd;
 const int LEDSB = 5;
-//const int LEDLB;
+const int LEDLB = 4;
 //const int LEDSE;
-
+int startCountDown = 0;
 int count = 0;
 
 //turns on the green led for 1s when the short Button is pressed
@@ -23,11 +23,25 @@ void setup() {
   pinMode(shortButton, INPUT_PULLUP);
   pinMode(LEDSB, OUTPUT);
   attachInterrupt(digitalPinToInterrupt(shortButton), short_light, FALLING);
+  attachInterrupt(digitalPinToInterrupt(longButton), long_light, FALLING);
 
   Serial.begin(115200);
 
 }
 
+void long_light(){
+  startCountDown = 1;
+}
+
+int longLightCount = 3000;
+
 void loop() {
 
+  if(startCountDown && longLightCount > 0){
+    longLightCount--;
+    digitalWrite(LEDLB, HIGH);
+  }else{
+    digitalWrite(LEDLB, LOW);
+    startCountDown = 0;
+  }
 }
