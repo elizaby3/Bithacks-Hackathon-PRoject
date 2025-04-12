@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-#include <Timer.h>
-=======
 #include <HardwareSerial.h>
 #include <DFRobotDFPlayerMini.h>
 #include <Timer.h>
@@ -16,25 +13,23 @@ int startCountDown = 0;
 int count = 0;
 int randomIndex;
 
+const int txPin = 43;
+const int rxPin = 44;
+
 volatile bool lb_pressed = false;
 volatile bool sb_pressed = false;
 
 
 void short_light() {
   sb_pressed = true;
-<<<<<<< HEAD
 }
 
 void long_light(){
   lb_pressed = true;
 }
 
-=======
-}
-
 void long_light(){
-  lb_pressed = true;
-  
+  lb_pressed = true; 
 }
 
 void setup() {
@@ -108,10 +103,12 @@ void morseCheck() {
     if (buttonLog == alphaProp[randomIndex].morseCode) {
       Serial.println(alphaProp[randomIndex].letter);
       found = true;
+      //play congrats
       break;
     }
   if (!found) {
-    Serial.println("No match found.");
+    //play rickroll
+    Serial.println("Incorrect input");
   }
 }
 
