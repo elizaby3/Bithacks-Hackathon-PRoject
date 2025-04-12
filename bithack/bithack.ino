@@ -9,9 +9,9 @@ const int shortButton = 7;
 const int longButton = 6;
 const int stopButton = 15;
 
-const int LEDSB = 5;
-const int LEDLB = 4;
-const int LEDSE = 16;
+const int LEDSB = 5; //LED short button
+const int LEDLB = 4; //LED long button 
+const int LEDSE = 16; //LED start and end
 
 int startCountDown = 0;
 int count = 0;
