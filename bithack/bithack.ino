@@ -12,7 +12,7 @@ const int stopButton = 15;
 const int LEDSB = 5;
 const int LEDLB = 4;
 const int LEDSE = 16;
-const int buzzer = 17; ///
+const int buzzer = 17; //
 
 int startCountDown = 0;
 int count = 0;
@@ -98,6 +98,24 @@ void setup() {
   attachInterrup(digitalPinToInterrupt(stopButton), stop, FALLING);
 }
 
+void playMorseForLetter(String morseCode) {
+  for (int i = 0; i < morseCode.length(); i++) {
+    char bit = morseCode.charAt(i);
+    if (bit == '0') {
+      tone(16, 783, 1000);
+      digitalWrite(LEDSB, HIGH);
+      delay(1000);
+      digitalWrite(LEDSB, LOW);
+    } else if (bit == '1') {
+      tone(16, 783, 3000);
+      digitalWrite(LEDLB, HIGH);
+      delay(3000);
+      digitalWrite(LEDLB, LOW);
+    }
+  }
+}
+
+Alphabet currentLetter;
 void pickRandomLetter() {
   randomIndex = random(0, alphaSize);
 
@@ -107,6 +125,7 @@ void pickRandomLetter() {
   Serial.println(currentLetter.letter);
   Serial.print("Expected Morse code: ");
   Serial.println(currentLetter.morseCode);
+  playMorseForLetter(currentLetter.morseCode);
 }
 
 void morseCheck() {
@@ -115,6 +134,7 @@ void morseCheck() {
       Serial.println(alphaProp[randomIndex].letter);
       found = true;
       player.play(1); //use diff value for diff track number
+      //delay(?);
       break;
     }
   if (!found) {
