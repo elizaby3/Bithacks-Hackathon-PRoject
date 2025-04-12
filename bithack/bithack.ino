@@ -1,35 +1,59 @@
-const int shortButton = 6;
-//const int longButton;
-//const int startEnd;
-const int LEDSB = 5;
-//const int LEDLB;
-//const int LEDSE;
+#include <HardwareSerial.h>
+#include <DFRobotDFPlayerMini.h>
 
-int count = 0;
+const int shortButton = 7;
+const int longButton;
+const int startEnd;
+const int LEDSB = 15;
+const int LEDLB;
+const int LEDSE;
+const int rxPin = ;
+const int txPin = ;
+
+int startCountDown;
+HardwareSerial mySerial1(1);
+DFRobotDFPlayerMini player;
 
 //turns on the green led for 1s when the short Button is pressed
 void short_light() {
-  count++;
-  Serial.write("activated\n");
+  digitalWrite(LEDSB, HIGH);
+  tone(3, 783, 1000);
+  startCountDown = 1;
+  digitalWrite(LEDSB, LOW);
+  
+}
 
-  if (count%2 == 0) {
-    digitalWrite(LEDSB, LOW);
-  } else {
-    digitalWrite(LEDSB, HIGH);
-  }
+void long_light() {
+  digitalWrite(LEDLB, HIGH);
+  tone(3, 783, 3000);
+
+  startCountDown = 1;
+  digitalWrite(LEDLB, LOW);
 }
 
 void setup() {
   pinMode(shortButton, INPUT_PULLUP);
-  pinMode(LEDSB, OUTPUT);
   attachInterrupt(digitalPinToInterrupt(shortButton), short_light, FALLING);
+  pinMode(longButton, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(longButton), long_light, FALLING);
 
-  Serial.begin(115200);
+  player.volume(20);
+  player.play(1);
+  mySerial1.begin(9600, SERIAL_8N1, rxPin, txPin);
 
 }
 
+int longLightCount = 3000;
+
 void loop() {
 
+  if(startCountDown && longLightCount > 0) {
+    longLightCount--;
+    digitalWrite(LEDLB, HIGH);
+  }else{
+    digitalWrite(LEDLB, LOW);
+    startCountDown = 0;
+  }
 }
 
 struct Alphabet{ //creates the "dictionary" that allows to access the features of each letter in the alphabet
