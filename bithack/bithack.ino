@@ -27,7 +27,7 @@ void short_light() {
 }
 
 void long_light(){
-  int longLightCountDown = 1000;
+  int longLightCountDown = 3000;
   while(longLightCountDown > 0){
     longLightCountDown--;
     digitalWrite(LEDLB, HIGH);
