@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+#include <Timer.h>
+=======
+#include <HardwareSerial.h>
+#include <DFRobotDFPlayerMini.h>
 #include <Timer.h>
 Timer timer;
 
@@ -9,23 +14,27 @@ const int LEDLB = 4;
 //const int LEDSE;
 int startCountDown = 0;
 int count = 0;
-
-volatile bool sb_pressed = false;
-bool sb_pressed_prev = false;
-unsigned long sb_time = 0;
-unsigned long sb_time_next = 0;
+int randomIndex;
 
 volatile bool lb_pressed = false;
-bool lb_pressed_prev = false;
-unsigned long lb_time = 0;
-unsigned long lb_time_next = 0;
+volatile bool sb_pressed = false;
+
 
 void short_light() {
   sb_pressed = true;
+<<<<<<< HEAD
 }
 
 void long_light(){
   lb_pressed = true;
+}
+
+=======
+}
+
+void long_light(){
+  lb_pressed = true;
+  
 }
 
 void setup() {
@@ -41,7 +50,6 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(longButton), long_light, FALLING);      //setup for pinmods and interrupts
 
 }
-
 
 String buttonLog = "";
 
@@ -68,6 +76,16 @@ void loop() {
   if (stop_pressed) {
     morseCheck();
   }
+
+  if (lb_pressed) {
+    digitalWrite(LEDLB, HIGH);
+    buttonLog += "1";
+    Serial.println("Long button pressed. Log: " + buttonLog);
+    delay(2000);
+    digitalWrite(LEDLB, LOW);
+    lb_pressed = false;
+  }
+
 }
 
 struct Alphabet{
@@ -76,7 +94,7 @@ struct Alphabet{
 };
 
 void pickRandomLetter() {
-  int randomIndex = random(0, alphaSize); // Get random index from 0 to alphaSize - 1
+  randomIndex = random(0, alphaSize); // Get random index from 0 to alphaSize - 1
   currentLetter = alphaProp[randomIndex];
 
   Serial.print("New round! Morse for letter: ");
@@ -85,17 +103,13 @@ void pickRandomLetter() {
   Serial.println(currentLetter.morseCode);
 }
 
-
 void morseCheck() {
   bool found = false;
-  for (int i = 0; i < alphaSize; i++) {
-    if (buttonLog == alphaProp[i].morseCode) {
-      Serial.print("Matched letter: ");
-      Serial.println(alphaProp[i].letter);
+    if (buttonLog == alphaProp[randomIndex].morseCode) {
+      Serial.println(alphaProp[randomIndex].letter);
       found = true;
       break;
     }
-  }
   if (!found) {
     Serial.println("No match found.");
   }
@@ -128,7 +142,6 @@ Alphabet alphaProp[] = { //creates an array that includes all letters of the alp
   {"X", "1001"},
   {"Y", "1011"},
   {"Z", "1100"},
-
 }
 
 
