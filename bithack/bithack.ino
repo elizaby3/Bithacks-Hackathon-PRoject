@@ -10,6 +10,7 @@ const int LEDSE;
 const int rxPin = ;
 const int txPin = ;
 
+int startCountDown;
 HardwareSerial mySerial1(1);
 DFRobotDFPlayerMini player;
 
@@ -17,15 +18,16 @@ DFRobotDFPlayerMini player;
 void short_light() {
   digitalWrite(LEDSB, HIGH);
   tone(3, 783, 1000);
-  //delay(1000);
+  startCountDown = 1;
   digitalWrite(LEDSB, LOW);
   
 }
 
 void long_light() {
   digitalWrite(LEDLB, HIGH);
+  tone(3, 783, 3000);
+
   startCountDown = 1;
-  delay(1000);
   digitalWrite(LEDLB, LOW);
 }
 
@@ -45,7 +47,7 @@ int longLightCount = 3000;
 
 void loop() {
 
-  if(startCountDown && longLightCount > 0){
+  if(startCountDown && longLightCount > 0) {
     longLightCount--;
     digitalWrite(LEDLB, HIGH);
   }else{
