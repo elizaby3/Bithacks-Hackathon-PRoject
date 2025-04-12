@@ -1,4 +1,4 @@
-const int shortButton;
+const int shortButton = 7;
 const int longButton;
 const int startEnd;
 const int LEDSB;
