@@ -5,13 +5,16 @@
 #include <Timer.h>
 Timer timer;
 
+const int alphaSize = 26;
+
 const int shortButton = 7;
 const int longButton = 6;
 const int stopButton = 15;
-//const int startEnd;
+
 const int LEDSB = 5;
 const int LEDLB = 4;
-//const int LEDSE;
+const int LEDSE = 16;
+
 int startCountDown = 0;
 int count = 0;
 int randomIndex;
@@ -20,91 +23,10 @@ volatile bool lb_pressed = false;
 volatile bool sb_pressed = false;
 volatile bool stop_pressed = false;
 
-
-void short_light() {
-  sb_pressed = true;
-}
-
-void long_light(){
-  lb_pressed = true;
-}
-
-void stop() {
-  stop_pressed = true;
-}
-
-void setup() {
-  Serial.begin(115200);
-  while (!Serial) {
-    delay(10);
-  }
-  pinMode(shortButton, INPUT_PULLUP);
-  pinMode(LEDSB, OUTPUT);
-  
-  pinMode(longButton, INPUT_PULLUP);
-  pinMode(LEDLB, OUTPUT);
-
-  pinMode(stopButton, INPUT_PULLUP);
-
-  attachInterrupt(digitalPinToInterrupt(shortButton), short_light, FALLING);
-  attachInterrupt(digitalPinToInterrupt(longButton), long_light, FALLING);      //setup for pinmods and interrupts
-  attachInterrupt(digitalPinToInterrupt(stopButton), stop, FALLING);
-}
-
-String buttonLog = "";
-
-void loop() {
-
-  if (sb_pressed) {
-    digitalWrite(LEDSB, HIGH);
-    buttonLog += "0"; 
-    Serial.println("Short button pressed. Log: " + buttonLog);
-    delay(1000);
-    digitalWrite(LEDSB, LOW);
-    sb_pressed = false;
-  }
-
-  if (lb_pressed) {
-    digitalWrite(LEDLB, HIGH);
-    buttonLog += "1";
-    Serial.println("Long button pressed. Log: " + buttonLog);
-    delay(2000);
-    digitalWrite(LEDLB, LOW);
-    lb_pressed = false;
-  }
-
-  if (stop_pressed) {
-    morseCheck();
-  }
-}
-
 struct Alphabet{
   String letter;  
   String morseCode; 
 };
-
-void pickRandomLetter() {
-  randomIndex = random(0, alphaSize); // Get random index from 0 to alphaSize - 1
-  currentLetter = alphaProp[randomIndex];
-
-  Serial.print("New round! Morse for letter: ");
-  Serial.println(currentLetter.letter);
-  Serial.print("Expected Morse code: ");
-  Serial.println(currentLetter.morseCode);
-}
-
-void morseCheck() {
-  bool found = false;
-    if (buttonLog == alphaProp[randomIndex].morseCode) {
-      Serial.println(alphaProp[randomIndex].letter);
-      found = true;
-      break;
-    }
-  if (!found) {
-    Serial.println("No match found.");
-  }
-}
-
 Alphabet alphaProp[] = { //creates an array that includes all letters of the alphabet and its properties as properties 
   {"A", "01"},
   {"B", "1000"},
@@ -132,4 +54,90 @@ Alphabet alphaProp[] = { //creates an array that includes all letters of the alp
   {"X", "1001"},
   {"Y", "1011"},
   {"Z", "1100"},
+};
+String buttonLog = "";
+
+void short_light() {
+  sb_pressed = true;
+}
+
+void long_light(){
+  lb_pressed = true;
+}
+
+void stop() {
+  stop_pressed = true;
+}
+
+void setup() {
+  Serial.begin(115200);
+  while (!Serial) {
+    delay(10);
+  }
+  pinMode(shortButton, INPUT_PULLUP);
+  pinMode(LEDSB, OUTPUT);
+  
+  pinMode(longButton, INPUT_PULLUP);
+  pinMode(LEDLB, OUTPUT);
+
+  pinMode(stopButton, INPUT_PULLUP);
+  pinMode(LEDSE,OUTPUT);
+
+  attachInterrupt(digitalPinToInterrupt(shortButton), short_light, FALLING);
+  attachInterrupt(digitalPinToInterrupt(longButton), long_light, FALLING);      //setup for pinmods and interrupts
+  attachInterrupt(digitalPinToInterrupt(stopButton), stop, FALLING);
+}
+
+
+
+void pickRandomLetter() {
+  randomIndex = random(0, alphaSize); // Get random index from 0 to alphaSize - 
+
+  Alphabet currentLetter = alphaProp[randomIndex];
+
+  Serial.print("New round! Morse for letter: ");
+  Serial.println(currentLetter.letter);
+  Serial.print("Expected Morse code: ");
+  Serial.println(currentLetter.morseCode);
+}
+
+
+void morseCheck() {
+  bool found = false;
+    if (buttonLog == alphaProp[randomIndex].morseCode) {
+      Serial.println(alphaProp[randomIndex].letter);
+      found = true;
+    }
+  if (!found) {
+    Serial.println("No match found.");
+  }
+}
+
+void loop() {
+
+  if (sb_pressed) {
+    digitalWrite(LEDSB, HIGH);
+    buttonLog += "0"; 
+    Serial.println("Short button pressed. Log: " + buttonLog);
+    delay(1000);
+    digitalWrite(LEDSB, LOW);
+    sb_pressed = false;
+  }
+
+  if (lb_pressed) {
+    digitalWrite(LEDLB, HIGH);
+    buttonLog += "1";
+    Serial.println("Long button pressed. Log: " + buttonLog);
+    delay(2000);
+    digitalWrite(LEDLB, LOW);
+    lb_pressed = false;
+  }
+
+  if (stop_pressed) {
+    morseCheck();
+    digitalWrite(LEDSE, HIGH);
+    delay(1000);
+    digitalWrite(LEDSE, LOW);
+    stop_pressed = false;
+  }
 }
