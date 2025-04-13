@@ -97,8 +97,8 @@ int Elf = 311;
 void congrats() {
 int EN = 200*0.75;
 int SN = 100*0.75;
-int QN = 400*0.5;
-int DotEN = 300*0.75;
+int QN = 400*0.75;
+int DotEN = 300*0.755;
   tone(buzzer, Elf, EN);
   tone(buzzer, Blf, SN);
   tone(buzzer, F3, EN);
@@ -133,43 +133,6 @@ int DotEN = 300*0.75;
   tone(buzzer, Eflat, EN);
   tone(buzzer, FB, EN);
   tone(buzzer, GB, 800*0.75);
-
-  tone(buzzer, 208, EN);
-  tone(buzzer, G3, EN);
-  tone(buzzer, F3, EN);
-  tone(buzzer, Eflat, SN);
-  tone(buzzer, Bflat, EN);
-  tone(buzzer, G3, EN);
-  tone(buzzer, F3, EN);
-  tone(buzzer, Eflat, SN);
-  tone(buzzer, F3, QN);
-
-  tone(buzzer, 175, EN);
-  tone(buzzer, Blf, EN);
-  tone(buzzer, FB, SN);
-  tone(buzzer, Blf, SN);
-  tone(buzzer, G3, SN);
-  tone(buzzer, Alf, SN);
-  tone(buzzer, C3, SN);
-  tone(buzzer, Blf, EN);
-  tone(buzzer, Eflat, EN);
-  tone(buzzer, D3, SN);
-  tone(buzzer, C3, SN);
-
-  tone(buzzer, C3, QN);
-  tone(buzzer, 252, EN);
-  tone(buzzer, 311, EN);
-  tone(buzzer, Blf, QN);
-  tone(buzzer, D3, 500*0.75);
-
-  tone(buzzer, 294, EN);
-  tone(buzzer, Blf, EN);
-  tone(buzzer, Eflat, SN);
-  tone(buzzer, D3, SN);
-  tone(buzzer, C3, EN);
-  tone(buzzer, Elf, EN);
-  tone(buzzer, C3, QN);
-
 }
 
 void lost() {
@@ -272,9 +235,13 @@ void setup() {
 
 bool check = false;
 void pickRandomLetter() {
-  randomIndex++;
-  if ((randomIndex > 25) || check) {
-    check = true;
+  if (learning) {
+    randomIndex++;
+    if ((randomIndex > 25) || check) {
+      check = true;
+      randomIndex = random(0, alphaSize);
+    }
+  } else {
     randomIndex = random(0, alphaSize);
   }
   
