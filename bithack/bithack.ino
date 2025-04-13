@@ -1,9 +1,13 @@
-#include <Timer.h>
 #include <HardwareSerial.h>
 #include <DFRobotDFPlayerMini.h>
 #include <LiquidCrystal_I2C.h>
+#include <Wire.h>
 
-const int alphaSize = 26;
+#define I2C_SDA 10
+#define I2C_SDL 11
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+const int alphaSize = 25;
 
 const int shortButton = 7;
 const int longButton = 6;
@@ -12,22 +16,28 @@ const int stopButton = 15;
 const int LEDSB = 5;
 const int LEDLB = 4;
 const int LEDSE = 16;
+const int buzzer = 17; ///
 
 int startCountDown = 0;
 int count = 0;
-int randomIndex;
+int randomIndex = -1;
+
+const int txPin = 43; //
+const int rxPin = 44; //
 
 volatile bool lb_pressed = false;
 volatile bool sb_pressed = false;
 volatile bool stop_pressed = false;
 
-LiquidCrystal_I2C lcd(0x27, 16, 2);
+DFRobotDFPlayerMini player;
+
+HardwareSerial mySerial1(1);
 
 struct Alphabet{
   String letter;  
   String morseCode; 
 };
-Alphabet alphaProp[] = { //creates an array that includes all letters of the alphabet and its properties as properties 
+Alphabet alphaProp[] = {
   {"A", "01"},
   {"B", "1000"},
   {"C", "1010"},
@@ -55,72 +65,115 @@ Alphabet alphaProp[] = { //creates an array that includes all letters of the alp
   {"Y", "1011"},
   {"Z", "1100"},
 };
+
+Alphabet currentLetter;
+
 String buttonLog = "";
 
 void short_light() {
   sb_pressed = true;
+  Serial.println("Short");
+  //tone(16, 783, 1000); //
 }
 
 void long_light(){
   lb_pressed = true;
+  Serial.println("Long");
+  //tone(16, 783, 3000); //
 }
 
-void stop() {
+void stop_light() {
+  Serial.println("stop");
   stop_pressed = true;
 }
 
 void setup() {
   Serial.begin(115200);
   while (!Serial) {
-    delay(10);
+  delay(10);
   }
+
+  /*mySerial1.begin(9600, SERIAL_8N1, rxPin, txPin);
+  player.volume(20);*/ 
   pinMode(shortButton, INPUT_PULLUP);
   pinMode(LEDSB, OUTPUT);
-  
+
   pinMode(longButton, INPUT_PULLUP);
   pinMode(LEDLB, OUTPUT);
 
   pinMode(stopButton, INPUT_PULLUP);
-  pinMode(LEDSE,OUTPUT);
+  pinMode(LEDSE, OUTPUT);
+
+  pinMode(buzzer, OUTPUT);
 
   attachInterrupt(digitalPinToInterrupt(shortButton), short_light, FALLING);
-  attachInterrupt(digitalPinToInterrupt(longButton), long_light, FALLING);      //setup for pinmods and interrupts
-  attachInterrupt(digitalPinToInterrupt(stopButton), stop, FALLING);
+  attachInterrupt(digitalPinToInterrupt(longButton), long_light, FALLING);    
+  attachInterrupt(digitalPinToInterrupt(stopButton), stop_light, FALLING);
 
+  Wire.begin(I2C_SDA, I2C_SDL);
   lcd.init();
   lcd.backlight();
 
   pickRandomLetter();
 }
 
-
-
+bool check = false;
 void pickRandomLetter() {
-  randomIndex = random(0, alphaSize); // Get random index from 0 to alphaSize - 
-
-  Alphabet currentLetter = alphaProp[randomIndex];
-
+  randomIndex++;
+  if ((randomIndex > 25) || check) {
+    check = true;
+    randomIndex = random(0, alphaSize);
+  }
+  
+  currentLetter = alphaProp[randomIndex];
   lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("Morse for letter: ");
-  lcd.setCursor(1,0);
+  lcd.setCursor(0,1);
   lcd.print(currentLetter.letter);
-  delay(10000);
+  showLetter();
 }
 
+void showLetter() {
+
+  for (int i = 0; i < currentLetter.morseCode.length(); i++) {
+    if (currentLetter.morseCode[i] == '0') {
+      digitalWrite(LEDSB, HIGH);
+      delay(500);
+      digitalWrite(LEDSB, LOW);
+      delay(100);
+    } else if (currentLetter.morseCode[i] == '1') {
+      digitalWrite(LEDLB, HIGH);
+      delay(1000);
+      digitalWrite(LEDLB, LOW);
+      delay(100);
+    }
+  }
+}
 
 void morseCheck() {
-  bool found = false;
-    if (buttonLog == alphaProp[randomIndex].morseCode) {
-      Serial.println(alphaProp[randomIndex].letter);
-      found = true;
-    }
-  if (!found) {
-    Serial.println("No match found.");
+
+  if (buttonLog == alphaProp[randomIndex].morseCode) {
+    Serial.println(alphaProp[randomIndex].letter);
+
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Great Job!");
+    delay(1500);
+    //player.play(1); //use diff value for diff track number
+  } else {
+    Serial.println("Inside not found");
+    //player.play(1); //use diff value for diff track number, whatever track corresponds to rick roll
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Incorrect Input");
+    lcd.setCursor(0,1);
+    lcd.print(":\(");
+    delay(1500);
+    //player.stop();
   }
 
-  pickRandomLetter();
-
+  buttonLog = "";
 }
 
 void loop() {
@@ -128,8 +181,7 @@ void loop() {
   if (sb_pressed) {
     digitalWrite(LEDSB, HIGH);
     buttonLog += "0"; 
-    Serial.println("Short button pressed. Log: " + buttonLog);
-    delay(1000);
+    delay(500);
     digitalWrite(LEDSB, LOW);
     sb_pressed = false;
   }
@@ -137,17 +189,18 @@ void loop() {
   if (lb_pressed) {
     digitalWrite(LEDLB, HIGH);
     buttonLog += "1";
-    Serial.println("Long button pressed. Log: " + buttonLog);
-    delay(2000);
+    delay(1000);
     digitalWrite(LEDLB, LOW);
     lb_pressed = false;
   }
 
   if (stop_pressed) {
-    morseCheck();
     digitalWrite(LEDSE, HIGH);
-    delay(1000);
+    delay(500);
     digitalWrite(LEDSE, LOW);
+    morseCheck();
     stop_pressed = false;
+
+    pickRandomLetter();
   }
 }
