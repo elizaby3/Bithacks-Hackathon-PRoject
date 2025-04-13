@@ -195,6 +195,7 @@ void set_mode() {
     digitalWrite(LEDM, HIGH);
   } else {
     learning = true;
+    randomIndex = -1;
     digitalWrite(LEDM, LOW);
   }
 }
