@@ -12,10 +12,13 @@ const int alphaSize = 25;
 const int shortButton = 7;
 const int longButton = 6;
 const int stopButton = 15;
+const int modeButton = 8;
 
 const int LEDSB = 5;
 const int LEDLB = 4;
 const int LEDSE = 16;
+const int LEDM = 18;
+
 const int buzzer = 17; ///
 
 int startCountDown = 0;
@@ -28,6 +31,7 @@ const int rxPin = 44; //
 volatile bool lb_pressed = false;
 volatile bool sb_pressed = false;
 volatile bool stop_pressed = false;
+volatile bool learning = true;
 
 DFRobotDFPlayerMini player;
 
@@ -132,6 +136,16 @@ void stop_light() {
   stop_pressed = true;
 }
 
+void set_mode() {
+  if (learning) {
+    learning = false;
+    digitalWrite(LEDM, HIGH);
+  } else {
+    learning = true;
+    digitalWrite(LEDM, LOW);
+  }
+}
+
 void setup() {
   Serial.begin(115200);
   while (!Serial) {
@@ -151,9 +165,13 @@ void setup() {
 
   pinMode(buzzer, OUTPUT);
 
+  pinMode(modeButton, INPUT_PULLUP);
+  pinMode(LEDM, OUTPUT);
+
   attachInterrupt(digitalPinToInterrupt(shortButton), short_light, FALLING);
   attachInterrupt(digitalPinToInterrupt(longButton), long_light, FALLING);    
   attachInterrupt(digitalPinToInterrupt(stopButton), stop_light, FALLING);
+  attachInterrupt(digitalPinToInterrupt(modeButton), set_mode, FALLING);
 
   Wire.begin(I2C_SDA, I2C_SDL);
   lcd.init();
@@ -176,7 +194,9 @@ void pickRandomLetter() {
   lcd.print("Morse for letter: ");
   lcd.setCursor(0,1);
   lcd.print(currentLetter.letter);
-  showLetter();
+  if (learning) {
+    showLetter();
+  }
 }
 
 void showLetter() {
