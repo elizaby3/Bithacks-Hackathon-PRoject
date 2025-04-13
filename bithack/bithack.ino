@@ -138,11 +138,13 @@ void showLetter() {
 
   for (int i = 0; i < currentLetter.morseCode.length(); i++) {
     if (currentLetter.morseCode[i] == '0') {
+      tone(buzzer, 783, 500);
       digitalWrite(LEDSB, HIGH);
       delay(500);
       digitalWrite(LEDSB, LOW);
       delay(100);
     } else if (currentLetter.morseCode[i] == '1') {
+      tone(buzzer, 783, 1000);
       digitalWrite(LEDLB, HIGH);
       delay(1000);
       digitalWrite(LEDLB, LOW);
@@ -179,6 +181,7 @@ void morseCheck() {
 void loop() {
 
   if (sb_pressed) {
+    tone(buzzer, 783, 500);
     digitalWrite(LEDSB, HIGH);
     buttonLog += "0"; 
     delay(500);
@@ -187,6 +190,7 @@ void loop() {
   }
 
   if (lb_pressed) {
+    tone(buzzer, 783, 1000);
     digitalWrite(LEDLB, HIGH);
     buttonLog += "1";
     delay(1000);
