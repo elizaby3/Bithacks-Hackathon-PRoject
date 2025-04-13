@@ -37,6 +37,7 @@ struct Alphabet{
   String letter;  
   String morseCode; 
 };
+
 Alphabet alphaProp[] = {
   {"A", "01"},
   {"B", "1000"},
@@ -69,6 +70,50 @@ Alphabet alphaProp[] = {
 Alphabet currentLetter;
 
 String buttonLog = "";
+
+int C3 = 523;
+int D3 = 587;
+int E3 = 659;
+int F3 = 698;
+int G3 = 783;
+int A_3=880;
+
+void lost() {
+  tone(buzzer, C3, 2*50);
+  tone(buzzer, D3, 2*50);
+  tone(buzzer, F3, 2*50);
+  tone(buzzer, D3, 2*50);
+
+  tone(buzzer, A_3, 6*50);
+  tone(buzzer, A_3, 6*50);
+  tone(buzzer, G3, 12*50);
+
+  tone(buzzer, C3, 2*50);
+  tone(buzzer, D3, 2*50);
+  tone(buzzer, F3, 2*50);
+  tone(buzzer, D3, 2*50);
+
+  tone(buzzer, G3, 6*50);
+  tone(buzzer, G3, 6*50);
+  tone(buzzer, F3, 6*50);
+  tone(buzzer, E3, 2*50);
+  tone(buzzer, D3, 4*50);
+
+  tone(buzzer, C3, 2*50);
+  tone(buzzer, D3, 2*50);
+  tone(buzzer, F3, 2*50);
+  tone(buzzer, D3, 2*50);
+
+  tone(buzzer, F3, 8*50);
+  tone(buzzer, G3, 4*50);
+  tone(buzzer, E3, 6*50);
+  tone(buzzer, D3, 2*50);
+  tone(buzzer, C3, 8*50);
+  tone(buzzer, C3, 2*50);
+  tone(buzzer, G3, 8*50);
+  tone(buzzer, F3, 16*50);
+
+}
 
 void short_light() {
   sb_pressed = true;
@@ -162,16 +207,14 @@ void morseCheck() {
     lcd.setCursor(0,0);
     lcd.print("Great Job!");
     delay(1500);
-    //player.play(1); //use diff value for diff track number
   } else {
-    Serial.println("Inside not found");
-    //player.play(1); //use diff value for diff track number, whatever track corresponds to rick roll
+    lost();
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Incorrect Input");
     lcd.setCursor(0,1);
     lcd.print(":\(");
-    delay(1500);
+    delay(7000);
     //player.stop();
   }
 
