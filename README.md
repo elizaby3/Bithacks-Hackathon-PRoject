@@ -1,5 +1,6 @@
 # Morse Code Memory Game
-[Original Devpost](https://devpost.com/software/bithacks-hackathon-project)
+In the 2025 UCI Bithacks Competition, our team EECS Geese created the morse code memory game with the 
+[Original Devpost](https://devpost.com/software/bithacks-hackathon-project) here for reference.
 
 https://github.com/user-attachments/assets/25d740ae-4769-4035-9ea9-6cedd25ccec9
 
@@ -26,3 +27,10 @@ The challenges we faced throughout this project are the ones that taught us the 
 
 ## Future Plans
 We intend to add more features such as more testing phrases apart from letters, having the game adjust to user speed, include spaced repetition in learning mode for better retention, and including a mode of converting a morse code input back into text.
+
+##Credits
+Links to all of the Contributers
+[Elizabeth Yang's Github Website](https://elizaby3.github.io/)
+[Anika Saha's Github Page](https://github.com/anikasskhushi)
+[Chloe Nguyen's Github Page](https://github.com/HC-Chloe)
+[Lainey Tran's Devpost](https://devpost.com/laineyt777)
