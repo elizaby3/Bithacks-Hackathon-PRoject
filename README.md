@@ -28,9 +28,9 @@ The challenges we faced throughout this project are the ones that taught us the 
 ## Future Plans
 We intend to add more features such as more testing phrases apart from letters, having the game adjust to user speed, include spaced repetition in learning mode for better retention, and including a mode of converting a morse code input back into text.
 
-##Credits
+## Credits
 Links to all of the Contributers
-[Elizabeth Yang's Github Website](https://elizaby3.github.io/)
-[Anika Saha's Github Page](https://github.com/anikasskhushi)
-[Chloe Nguyen's Github Page](https://github.com/HC-Chloe)
-[Lainey Tran's Devpost](https://devpost.com/laineyt777)
+- [Elizabeth Yang's Github Website](https://elizaby3.github.io/)
+- [Anika Saha's Github Page](https://github.com/anikasskhushi)
+- [Chloe Nguyen's Github Page](https://github.com/HC-Chloe)
+- [Lainey Tran's Devpost](https://devpost.com/laineyt777)
