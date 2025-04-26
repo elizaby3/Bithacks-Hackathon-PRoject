@@ -3,7 +3,7 @@ In the 2025 UCI Bithacks Competition, our team EECS Geese created the morse code
 [Original Devpost](https://devpost.com/software/bithacks-hackathon-project) here for reference.
 
 Click on Image Below for the Video Demonstration:
-[![Watch the video](https://img.youtube.com/vi/0o28hLCgdSQ/maxresdefault.jpg)](https://www.youtube.com/watch?v=0o28hLCgdSQ)
+[![Watch the Video](https://img.youtube.com/vi/0o28hLCgdSQ/maxresdefault.jpg)](https://www.youtube.com/watch?v=0o28hLCgdSQ)
 
 ## Inspiration
 Many people are familiar with SOS standing for "Save Our Souls," but what most people don't know that "Save Our Souls" came after the creation of SOS to help people remember SOS as SOS was used since the morse code was easy to do and distinguishable.
